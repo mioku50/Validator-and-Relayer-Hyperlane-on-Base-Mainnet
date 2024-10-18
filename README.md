@@ -48,6 +48,14 @@ source /root/.bashrc
 foundryup
 ```
 
+_**Install Screen**_
+
+```
+sudo apt screen
+```
+
+
+
 _**Install Hyperlane CLI**_
 
 ```
@@ -145,7 +153,6 @@ Next, click SSH and GPG Keys and in the SSH key tab enter our previously copied 
 Once the repository has been successfully cloned, open a new tab and **write the following**
 
 ```
-sudo apt screen
 screen -S hypval
 cd hyperlane-monorepo
 cd rust
@@ -194,6 +201,8 @@ cargo run --release --bin relayer -- \
 
 
 **Logs**
+
+**Screen -ls**
 
 ```
 screen -x hypval
