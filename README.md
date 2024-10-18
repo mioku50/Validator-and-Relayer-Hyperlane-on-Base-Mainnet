@@ -152,7 +152,7 @@ cd rust
 cd main
 ```
 
-_**Далее запускаем Валидатор**_
+**Run Validator**
 
 ```
 cargo run --release --bin validator -- \
@@ -187,7 +187,7 @@ cargo run --release --bin relayer -- \
     --metrics-port 9091
 ```
 
-\<chain\_1\_name>,\<chain\_2\_name> _например odysseytestnet,sepolia_
+\<chain\_1\_name>,\<chain\_2\_name> _**Example** odysseytestnet,sepolia_
 
 \<your\_relayer\_key>  - **your private key **_**EVM (Metamask)**_
 
