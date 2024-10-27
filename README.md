@@ -127,7 +127,13 @@ hyperlane registry agent-config --chains odysseytestnet
 
 _**Prescribing dependencies**_
 
-`export CONFIG_FILES=$HOME/configs/agent-config.json mkdir r -p tmp/hyperlane-validator-signatures-odysseytestnet export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-odysseytestnet mkdir -p $VALIDATOR_SIGNATURES_DIR`
+`export CONFIG_FILES=$HOME/configs/agent-config.json`&#x20;
+
+`mkdir r -p tmp/hyperlane-validator-signatures-basesepolia`&#x20;
+
+`export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-basesepolia`&#x20;
+
+`mkdir -p $VALIDATOR_SIGNATURES_DIR`
 
 
 
