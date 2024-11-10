@@ -94,15 +94,15 @@ _For protocol fee hook, enter owner address — **your EVM public address**_
 
 _Use this same address — **YES**_
 
-_Enter max protocol fee for protocol fee hook — **100000000000000000**_
+_Enter max protocol fee for protocol fee hook — **1**_
 
-_Enter protocol fee for protocol fee hook — **0.1**_
+_Enter protocol fee for protocol fee hook — **0.0001**_
 
 
 
 _**Deploy Contracts**_
 
-&#x20;_**Your selected network should have at least**_ _**0.02 ETH**_
+&#x20;_**Your selected network should have at least**_ _**0.004 ETH**_
 
 ```
 hyperlane core deploy
@@ -214,6 +214,48 @@ cargo run --release --bin relayer -- \
 screen -x hypval
 screen -x hyprel
 ```
+
+**Sending tokens using Warp Routers**
+
+After creating our Validator, a unique “Mailbox” address is created and when using Warp Routers on the network where we created the Validator, Hyperlane CLI automatically uses it when deploying your Warp Route.
+
+If after creating a Warp Route in SuperBridge, the same picture is observed, i.e. the bridge does not show us the amount of gas and the “Review Bridge” button is inactive:
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-10 175203.png" alt=""><figcaption></figcaption></figure>
+
+then first make sure that when configuring the Warp Route when asked for _**“Proxy Admin" you press N (no).**_
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-10 175724.png" alt=""><figcaption></figcaption></figure>
+
+If the problem persists, we will perform transactions through HyperlaneCLI
+
+First of all, so that we don't have to constantly enter “Owner Address and ‘Private Key’, let's enter the _**following command:**_
+
+```
+HYP_KEY=0xprivatekey
+```
+
+_**Next, enter the following**_
+
+```
+hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/AIDOGE/arbitrum-base-config.yaml --amount 2
+```
+
+/AIDOGE - _**Your token**_
+
+/arbitrum-base-config.yaml - _**change to your networks**_
+
+\--amount 2 - _**number of tokens**_
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-10 180612.png" alt=""><figcaption></figcaption></figure>
+
+The totals shall be as follows:
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-10 180636.png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-10 180657.png" alt=""><figcaption></figcaption></figure>
+
+
 
 
 
