@@ -172,7 +172,7 @@ cd main
 ```
 cargo run --release --bin validator -- \
     --db ./hyperlane_db_validator_base \
-    --originChainName base\
+    --originChainName base \
     --checkpointSyncer.type localStorage \
     --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
     --validator.key <your_validator_key
