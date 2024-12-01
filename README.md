@@ -1,5 +1,5 @@
 ---
-cover: .gitbook/assets/IMG_9498 (1).JPG
+cover: .gitbook/assets/unnamed (14).jpg
 coverY: 0
 ---
 
@@ -17,7 +17,7 @@ This signature is stored and made publicly available , which is then used by the
 
 Following this guide, you should be able to run a Hyperlane validator on any of the existing chains on which the protocol runs. Hyperlane validators are run on the original chains.
 
-In this guide, we will run the validator on the Odyssey testnet chain, but you can run it on any other chain.
+In this guide, we will run the validator on the Base Mainnet chain, but you can run it on any other chain.
 
 _**Relayer**_
 
@@ -84,9 +84,11 @@ _Enter threshold of validators (number) for message ID multisig ISM - **writing 
 
 _Enter validator addresses (comma separated list) for message ID multisig ISM - **writing your EVM public address**_
 
+_Proxy Admin -_ **Enter Your EVM Address**
+
 _Select default hook type - **select merkleTreeHook**_
 
-Next, select - _aggregationHook **and**_** enter 1**
+Next, select - _aggregationHook **and**_**&#x20;enter 1**
 
 Next, **select protocolFee** and answer the following questions::
 
@@ -102,7 +104,7 @@ _Enter protocol fee for protocol fee hook — **0.0001**_
 
 _**Deploy Contracts**_
 
-&#x20;_**Your selected network should have at least**_ _**0.004 ETH**_
+&#x20;_**Your selected network Base Mainnet should have at least**_ _**0.0004 ETH, Linea - 0.002 ETH, Base Sepolia - 0.005 ETH**_
 
 ```
 hyperlane core deploy
@@ -112,16 +114,16 @@ HYP\_Key — **enter your Private key EVM (Metamask)**
 
 _Select network type — **select testnet or mainnet**_
 
-_Select chain to connect —_ **I chose** _Odyssey testnet_
+_Select chain to connect —_ **I chose** _Base Mainnet_
 
-_Do you want to use an API key to verify on this (basesepolia) chain’s block explorer — **N (No) and ENTER**_
+_Do you want to use an API key to verify on this (base) chain’s block explorer — **N (No) and ENTER**_
 
 
 
 **We are now ready to generate an agent configuration using our deployed contracts**
 
 ```
-hyperlane registry agent-config --chains odysseytestnet
+hyperlane registry agent-config --chains base
 
 ```
 
@@ -129,9 +131,9 @@ _**Prescribing dependencies**_
 
 `export CONFIG_FILES=$HOME/configs/agent-config.json`&#x20;
 
-`mkdir r -p tmp/hyperlane-validator-signatures-basesepolia`&#x20;
+`mkdir r -p tmp/hyperlane-validator-signatures-base`
 
-`export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-basesepolia`&#x20;
+`export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-base`&#x20;
 
 `mkdir -p $VALIDATOR_SIGNATURES_DIR`
 
@@ -148,7 +150,7 @@ git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
 We will be asked for permissions in the form of an SSH Key and a password to it If you don't have an SSH Key, we'll make one.
 
 ```
-ssh-keygen -t rsa -b 4096 -C your Email
+ssh-keygen -t rsa -b 4096 -C your Email Github
 cat ~/.ssh/id_rsa.pub
 ```
 
@@ -169,8 +171,8 @@ cd main
 
 ```
 cargo run --release --bin validator -- \
-    --db ./hyperlane_db_validator_odysseytestnet \
-    --originChainName odysseytestnet\
+    --db ./hyperlane_db_validator_base \
+    --originChainName base\
     --checkpointSyncer.type localStorage \
     --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
     --validator.key <your_validator_key
@@ -200,9 +202,9 @@ cargo run --release --bin relayer -- \
     --metrics-port 9091
 ```
 
-\<chain\_1\_name>,\<chain\_2\_name> _**Example** odysseytestnet,sepolia_
+\<chain\_1\_name>,\<chain\_2\_name> _**Example** base,arbitrum_
 
-\<your\_relayer\_key>  - **your private key **_**EVM (Metamask)**_
+\<your\_relayer\_key>  - **your private key&#x20;**_**EVM (Metamask)**_
 
 
 
