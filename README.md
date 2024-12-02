@@ -180,6 +180,8 @@ cargo run --release --bin validator -- \
 
 \<your\_validator\_key>  - Your **EVM private key (Metamask)** Be sure to **insert 0x in front of our private key !!!!** We wait for “Build” from half an hour to several hours and when it is finished we should see "Green" logs
 
+<figure><img src=".gitbook/assets/Снимок экрана 2024-12-02 121203.png" alt=""><figcaption></figcaption></figure>
+
 That's it! The validator has been successfully installed
 
 We minimize our session (tab) by pressing **CTRL+A+D** and open a **new window.**
@@ -206,7 +208,7 @@ cargo run --release --bin relayer -- \
 
 \<your\_relayer\_key>  - **your private key&#x20;**_**EVM (Metamask)**_
 
-
+<figure><img src=".gitbook/assets/Снимок экрана 2024-12-02 121455.png" alt=""><figcaption></figcaption></figure>
 
 **Logs**
 
