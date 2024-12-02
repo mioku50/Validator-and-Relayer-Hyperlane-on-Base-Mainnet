@@ -100,7 +100,7 @@ _Enter max protocol fee for protocol fee hook — **1**_
 
 _Enter protocol fee for protocol fee hook — **0.0001**_
 
-
+<figure><img src=".gitbook/assets/Снимок экрана 2024-09-05 095747.png" alt=""><figcaption></figcaption></figure>
 
 _**Deploy Contracts**_
 
@@ -157,6 +157,8 @@ cat ~/.ssh/id_rsa.pub
 Copy the key that the team gave us and go to your Github page. Click “Setting” in the right corner and get to the profile settings.
 
 Next, click SSH and GPG Keys and in the SSH key tab enter our previously copied value and clone the repository again
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-09-05 103615.png" alt=""><figcaption></figcaption></figure>
 
 Once the repository has been successfully cloned, open a new tab and **write the following**
 
