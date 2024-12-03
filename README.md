@@ -188,6 +188,64 @@ That's it! The validator has been successfully installed
 
 We minimize our session (tab) by pressing **CTRL+A+D** and open a **new window.**
 
+
+
+**You can install multiple validator nodes on the same Vps Server**
+
+_**Let's install a second validator on this server example (Optimism)**_
+
+Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen.
+
+This means that we write the same validator start command as above but add an additional metric in the form of a different port than 9090. For example 9190
+
+Open a new tab and create a new sessio&#x6E;_**`Screen -S hypvall`**_&#x20;
+
+**Add dependencies**&#x20;
+
+```
+export CONFIG_FILES=$HOME/configs/agent-config.json
+mkdir r -p tmp/hyperlane-validator-signatures-optimism
+export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-optimism
+mkdir -p $VALIDATOR_SIGNATURES_DIR
+```
+
+
+
+```
+cargo run --release --bin validator -- \
+    --db ./hyperlane_db_validator_optimism \
+    --originChainName optimism \
+    --checkpointSyncer.type localStorage \
+    --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
+    --validator.key <your_validator_key
+    --metrics-port 9190
+```
+
+That's it. The next validator can be started on port 9290, for example.
+
+**Validator number 3 (Arbitrum)**
+
+**Add dependencies**&#x20;
+
+```
+export CONFIG_FILES=$HOME/configs/agent-config.json
+mkdir r -p tmp/hyperlane-validator-signatures-arbitrum
+export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-arbitrum
+mkdir -p $VALIDATOR_SIGNATURES_DIR
+```
+
+```
+cargo run --release --bin validator -- \
+    --db ./hyperlane_db_validator_arbitrum \
+    --originChainName arbitrum \
+    --checkpointSyncer.type localStorage \
+    --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
+    --validator.key <your_validator_key
+    --metrics-port 9290
+```
+
+
+
 **Run Relayer**
 
 ```
