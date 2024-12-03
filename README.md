@@ -225,6 +225,10 @@ That's it. The next validator can be started on port 9290, for example.
 
 **Validator number 3 (Arbitrum)**
 
+
+
+**Screen -S hypvalll**
+
 **Add dependencies**&#x20;
 
 ```
