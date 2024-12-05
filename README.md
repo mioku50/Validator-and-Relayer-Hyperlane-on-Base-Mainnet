@@ -250,7 +250,7 @@ cargo run --release --bin validator -- \
 
 **Running the Validator via Docker (Example Polygon Chain)**
 
-`mkdir r -p tmp/hyperlane-validator-signatures-polygon`&#x20;
+`mkdir -p tmp/hyperlane-validator-signatures-polygon`&#x20;
 
 `chmod -R 777 /tmp/hyperlane-validator-signatures-polygon`
 
