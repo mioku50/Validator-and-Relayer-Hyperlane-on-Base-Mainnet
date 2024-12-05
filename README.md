@@ -276,7 +276,7 @@ docker run -d \
   --validator.id <name> \
   --checkpointSyncer.type localStorage \
   --checkpointSyncer.folder polygon \
-  --checkpointSyncer.path /hyperlane_db_polygon/polygon_checkpoints \
+  --checkpointSyncer.path /tmp/hyperlane-validator-signatures-polygon/polygon_checkpoints \
   --validator.key <0xprivatekey> \
   --chains.polygon.signer.key <0xprivatekey> \
   --metrics-port 9190
