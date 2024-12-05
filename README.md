@@ -248,6 +248,48 @@ cargo run --release --bin validator -- \
     --metrics-port 9290
 ```
 
+**Running the Validator via Docker (Example Polygon Chain)**
+
+`mkdir r -p tmp/hyperlane-validator-signatures-polygon`&#x20;
+
+`chmod -R 777 /tmp/hyperlane-validator-signatures-polygon`
+
+
+
+* `<polygon>`: Specify the blockchain on which you want to run your Hyperlane node.
+* `<NAME>`: Provide a unique name for your validator.
+* `<0xPRIVATE_KEY>`: Enter the private key&#x20;
+* \--metrics port _**your port**_
+
+```
+docker run -d \
+  -it \
+  --name hyperlane \
+  -e CONFIG_FILES=/configs/agent-config.json \
+  --mount type=bind,source=/root/configs/agent-config.json,target=/configs/agent-config.json \
+  --mount type=bind,source=/tmp/hyperlane-validator-signatures-polygon,target=/hyperlane_db_polygon \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
+  ./validator \
+  --db /hyperlane_db_polygon \
+  --originChainName polygon \
+  --reorgPeriod 1 \
+  --validator.id <name> \
+  --checkpointSyncer.type localStorage \
+  --checkpointSyncer.folder polygon \
+  --checkpointSyncer.path /hyperlane_db_polygon/polygon_checkpoints \
+  --validator.key <0xprivatekey> \
+  --chains.polygon.signer.key <0xprivatekey> \
+  --metrics-port 9190
+```
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-11-20 115037 (1).jpg" alt=""><figcaption></figcaption></figure>
+
+**Logs:**
+
+`docker ps -a`
+
+docker logs \<id container hyperlane>
+
 
 
 **Run Relayer**
