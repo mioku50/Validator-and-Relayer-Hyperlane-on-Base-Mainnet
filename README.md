@@ -248,7 +248,17 @@ cargo run --release --bin validator -- \
     --metrics-port 9290
 ```
 
-**Running the Validator via Docker (Example Polygon Chain)**
+**Running the Validator via Docker - not recommended (Example Polygon Chain)**
+
+**Download** the Hyperlane project from its GitHub
+
+```
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
+```
+
+
+
+
 
 `mkdir -p tmp/hyperlane-validator-signatures-polygon`&#x20;
 
