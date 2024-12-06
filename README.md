@@ -260,7 +260,7 @@ docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents
 
 
 
-`mkdir -p tmp/hyperlane-validator-signatures-polygon`&#x20;
+`mkdir -p /tmp/hyperlane-validator-signatures-polygon`&#x20;
 
 `chmod -R 777 /tmp/hyperlane-validator-signatures-polygon`
 
