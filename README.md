@@ -331,8 +331,6 @@ Run Commands
 
 To simplify the installation we will create a file docker-compose.yml with the following contents:
 
-содержимым:
-
 ```
 version: '3.9'
 
