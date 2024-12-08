@@ -248,7 +248,7 @@ cargo run --release --bin validator -- \
     --metrics-port 9290
 ```
 
-**Running the Validator via Docker - not recommended (Example Polygon Chain)**
+**Running the Validator via Docker - (Example Polygon Chain)**
 
 **Download** the Hyperlane project from its GitHub
 
@@ -273,7 +273,7 @@ docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents
 
 ```
 docker run -d \
-  -it \
+  -p 9190:9090 \
   --name hyperlane \
   -e CONFIG_FILES=/configs/agent-config.json \
   --mount type=bind,source=/root/configs/agent-config.json,target=/configs/agent-config.json \
@@ -289,7 +289,6 @@ docker run -d \
   --checkpointSyncer.path /hyperlane_db_polygon/polygon_checkpoints \
   --validator.key <0xprivatekey> \
   --chains.polygon.signer.key <0xprivatekey> \
-  --metrics-port 9190
 ```
 
 <figure><img src=".gitbook/assets/Снимок экрана 2024-11-20 115037 (1).jpg" alt=""><figcaption></figcaption></figure>
@@ -298,7 +297,215 @@ docker run -d \
 
 `docker ps -a`
 
-docker logs \<id container hyperlane>
+docker logs \<id container hyperlane> ot
+
+`docker logs -f hyperlane`
+
+
+
+
+
+## Monitoring & Alerting
+
+**Monitoring is available for now only for those who have a node running in the Docker container. I haven't found an easy solution to start monitoring with Rust (Cargo) yet.**
+
+
+
+_**Installing Grafana To install the latest stable version of Grafana, simply run the following command**_
+
+```
+docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise
+```
+
+After the installation is complete, the web interface will be available at http://ip:3000. You will be asked to enter the admin login and admin password, after which you will be prompted for a new password.
+
+**Installing Prometheus**
+
+Run Commands
+
+`mkdir -p /root/prometheus`
+
+`nano /root/prometheus/docker-compose.yml`
+
+
+
+To simplify the installation we will create a file docker-compose.yml with the following contents:
+
+содержимым:
+
+```
+version: '3.9'
+
+networks:
+  monitoring:
+    driver: bridge
+    
+volumes:
+  prometheus_data: {}
+
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+```
+
+**CTRL+X+Y Enter**
+
+
+
+**Run Command**
+
+`nano /root/prometheus/prometheus.yml`
+
+and insert the following content
+
+```
+global:
+  scrape_interval:     15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    scrape_interval: 5s
+    static_configs:
+    - targets: ["localhost:9090"]
+
+  - job_name: "node base"
+    static_configs:
+    - targets: ["youripserver:port"]
+```
+
+
+
+**youripserver:port** - insert your data where your validator node is located
+
+<figure><img src=".gitbook/assets/Снимок экрана 2024-12-08 165904.png" alt=""><figcaption></figcaption></figure>
+
+
+
+_**Run Command**_
+
+`cd prometheus`
+
+`docker-compose up -d`
+
+After installation check the availability of Prometheus which will be available at http://ip:9090.
+
+
+
+Now the last step left is to add Prometheus to Grafana as a data retrieval source.
+
+Go to Grafana - Configuration - Data sources and click Add data source and select Prometheus.
+
+<figure><img src=".gitbook/assets/image-3-1536x604.png" alt=""><figcaption></figcaption></figure>
+
+In the URL field enter the address and port through which Prometheus is available in our case it is http://ip:9090.
+
+<figure><img src=".gitbook/assets/image-5.png" alt=""><figcaption></figcaption></figure>
+
+Scroll to the bottom of the page and click Save& test and after successful verification Prometheus will be added to Grafana.
+
+Before **starting** a container with a node, it is **mandatory** to have the **flag** (**example) -p 9190:9090 or -p 9091:9090 or -p 9092:9090** and so on in the first place
+
+**Example Doker Run (Validator 1 Polygon)**
+
+Run command&#x20;
+
+`mkdir -p /root/hyperlane_db_polygon && chmod -R 777 /root/hyperlane_db_polygon`
+
+
+
+```
+docker run -d \
+  -p 9190:9090 \
+  --name hyperlane \
+  -e CONFIG_FILES=/configs/agent-config.json \
+  --mount type=bind,source=/root/configs/agent-config.json,target=/configs/agent-config.json \
+  --mount type=bind,source=/root/hyperlane_db_polygon,target=/hyperlane_db_polygon \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
+  ./validator \
+  --db /hyperlane_db_polygon \
+  --originChainName polygon \
+  --reorgPeriod 1 \
+  --validator.id <name> \
+  --checkpointSyncer.type localStorage \
+  --checkpointSyncer.folder polygon \
+  --checkpointSyncer.path /hyperlane_db_polygon/polygon_checkpoints \
+  --validator.key <0xprivatekey> \
+  --chains.polygon.signer.key <0xprivatekey> \
+```
+
+**Validator 2 arbitrum**
+
+mkdir -p /root/hyperlane\_db\_arbitrum && chmod -R 777 /root/hyperlane\_db\_arbitrum
+
+
+
+`docker run -d`\
+`-p 9091:9090`\
+`--name hyperlanearbitrum`\
+`--mount type=bind,source=/root/hyperlane_db_arbitrum,target=/hyperlane_db_arbitrum`\
+`gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0`\
+`./validator`\
+`--db /hyperlane_db_arbitrum`\
+`--originChainName arbitrum`\
+`--reorgPeriod 1`\
+`--validator.id <>yourid<>`\
+`--checkpointSyncer.type localStorage`\
+`--checkpointSyncer.folder arbitrum`\
+`--checkpointSyncer.path /hyperlane_db_arbitrum/arbitrum_checkpoints`\
+`--validator.key 0xprivatekey`\
+`--chains.arbitrum.signer.key 0xprivatekey \`
+
+
+
+**The last step of the installation is to install the Hyperlane dashboard to collect statistics from the host system.**
+
+**Download Dashboard -** [**https://docs.hyperlane.xyz/docs/operate/validators/monitoring-alerting**](https://docs.hyperlane.xyz/docs/operate/validators/monitoring-alerting)&#x20;
+
+{% embed url="https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/2f7f714c5b698fedcead9825f52da6ef95f96be1/tools/grafana/validator-dashboard-template.json" %}
+
+Go to Grafana Dashboards (four squares in the side menu) - Brows - and click Import.
+
+<figure><img src=".gitbook/assets/image-6.png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/image-8.png" alt=""><figcaption></figcaption></figure>
+
+After you click the Import button, you will be taken to the installed dashboard, which will already display the collected data.
+
+<div><figure><img src=".gitbook/assets/Снимок экрана 2024-12-08 135254.png" alt=""><figcaption></figcaption></figure> <figure><img src=".gitbook/assets/Снимок экрана 2024-12-08 141149.png" alt=""><figcaption></figcaption></figure> <figure><img src=".gitbook/assets/Снимок экрана 2024-12-08 153955.png" alt=""><figcaption></figcaption></figure> <figure><img src=".gitbook/assets/Снимок экрана 2024-12-08 165138.png" alt=""><figcaption></figcaption></figure></div>
+
+
 
 
 
