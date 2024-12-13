@@ -275,8 +275,6 @@ docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents
 docker run -d \
   -p 9190:9090 \
   --name hyperlane \
-  -e CONFIG_FILES=/configs/agent-config.json \
-  --mount type=bind,source=/root/configs/agent-config.json,target=/configs/agent-config.json \
   --mount type=bind,source=/tmp/hyperlane-validator-signatures-polygon,target=/hyperlane_db_polygon \
   gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
   ./validator \
